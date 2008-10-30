@@ -8,12 +8,6 @@ class AssetCopier
   end
   
   def self.copy
-    paths = []
-    Find.find(source) do |path|
-      Find.prune if path =~ /\/\..+/
-      Find.prune if path =~ /(CVS|.svn|.git)/
-      paths << path
-    end
     paths.each do |path| 
       dest_path = path.gsub(source, destination)
       if File.directory?(path)
@@ -25,6 +19,16 @@ class AssetCopier
   rescue Exception => e
     puts "Error trying to copy files: #{e.inspect}"
     raise e
+  end
+  
+  def self.paths
+    paths = []
+    Find.find(source) do |path|
+      Find.prune if path =~ /\/\..+/
+      Find.prune if path =~ /(CVS|.svn|.git)/
+      paths << path
+    end
+    paths
   end
 end
  
