@@ -1,0 +1,21 @@
+= asset_copier
+
+Intelligent asset management for Rails plugins.
+
+== Installation
+ 
+Install the plugin in your Rails project:
+  
+  script/plugin install git://github.com/pelargir/asset_copier.git
+
+Or clone the project:
+
+  git clone git://github.com/pelargir/asset_copier.git
+
+== Resources
+
+Repository: http://github.com/pelargir/asset_copier
+Blog: http://matthewbass.com
+Author: Matthew Bass
+
+Extraction work sponsored by Terralien
