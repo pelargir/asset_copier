@@ -14,8 +14,9 @@ Gem::Specification.new do |s|
     "MIT-LICENSE",
     "Rakefile",
     "README",
-    "templates/asset_copier.rake",
-    "templates/install.rb",
+    "templates/asset_copier.erb",
+    "templates/install.erb",
+    "templates/asset_copier.rb",
     "TODO",
     "USAGE",
 		"asset_copier_generator.gemspec"
