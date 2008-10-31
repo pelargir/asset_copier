@@ -4,13 +4,36 @@ Intelligent asset management for Rails plugins.
 
 == Installation
  
-Install the plugin in your Rails project:
-  
-  script/plugin install git://github.com/pelargir/asset_copier.git
+Install the gem directly:
 
-Or clone the project:
+  gem sources -a http://gems.github.com (you only have to do this once)
+  sudo gem install pelargir-asset_copier
+
+Or clone the project, build the gem, and install:
 
   git clone git://github.com/pelargir/asset_copier.git
+  gem build asset_copier_generator.gemspec
+  sudo gem install asset_copier_generator
+
+== Usage
+
+asset_copier_generator will copy the necessary files into a target plugin
+to enable intelligent asset management. You should then check these files in
+to source control. The generated files become a part of your plugin.
+
+To install the files in your plugin, first ensure that your plugin is installed
+or symlinked from an existing Rails app. From the root of that Rails app, run:
+
+  script/generate asset_copier plugin_name
+  
+Where "plugin_name" is the name of the plugin you want to install into. The
+appropriate files will be copied into your plugin. Now, to copy assets
+from your plugin into your Rails app, run:
+
+  rake plugin_name:install
+
+Your users can run this same Rake task any time they want to update files
+in their Rails app to reflect the assets needed by your plugin.
 
 == Resources
 

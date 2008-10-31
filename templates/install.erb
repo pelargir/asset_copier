@@ -10,11 +10,11 @@ begin
   RAKE_FILE = File.join(File.dirname(__FILE__), '/tasks/asset_copier.rake')
   load RAKE_FILE
   
-  Rake::Task['asset_copier:<%= file_name %>:copy'].invoke
+  Rake::Task['<%= file_name %>:install'].invoke
   puts "=========================================================="
   puts "Success!"
   puts "=========================================================="
 rescue Exception => ex
-  puts "FAILED TO INSTALL REQUIRED FILES.  PLEASE RUN rake asset_copier:<%= file_name %>:copy."
+  puts "FAILED TO INSTALL REQUIRED FILES.  PLEASE RUN rake <%= file_name %>:install."
   puts "EXCEPTION: #{ex}"
 end

@@ -3,11 +3,9 @@
 
 require File.expand_path(File.dirname(__FILE__) + '/../lib/asset_copier')
 
-namespace :asset_copier do
-  namespace :<%= file_name %> do
-    desc "Install files required by <%= file_name %>"
-    task :copy do  
-      AssetCopier.copy
-    end
+namespace :<%= file_name %> do
+  desc "Install files required by <%= file_name %>"
+  task :install do  
+    AssetCopier.copy
   end
 end
