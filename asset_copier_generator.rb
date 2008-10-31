@@ -1,4 +1,4 @@
-class AppLayoutGenerator < Rails::Generator::NamedBase
+class AssetCopierGenerator < Rails::Generator::NamedBase
   def manifest
     record do |m|
       m.file "install.rb", "vendor/plugins/#{file_name}/install.rb"

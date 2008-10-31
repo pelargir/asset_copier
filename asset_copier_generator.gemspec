@@ -1,5 +1,5 @@
 Gem::Specification.new do |s|
-  s.name     = "asset_copier"
+  s.name     = "asset_copier_generator"
   s.version  = "0.5"
   s.date     = "2008-10-30"
   s.summary  = "Intelligent asset management for Rails plugins."
@@ -18,7 +18,7 @@ Gem::Specification.new do |s|
     "templates/install.rb",
     "TODO",
     "USAGE",
-		"asset_copier.gemspec"
+		"asset_copier_generator.gemspec"
 		]
   s.rdoc_options = ["--main", "README"]
   s.extra_rdoc_files = ["README"]
