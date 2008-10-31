@@ -3,7 +3,7 @@ require 'find'
 class AssetCopier
   @source = File.expand_path(File.join(File.dirname(__FILE__), '..', 'files'))
   @destination = RAILS_ROOT
-  class << self 
+  class << self
     attr_accessor :source, :destination
   end
   
