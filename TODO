@@ -2,3 +2,4 @@
 * Files that have been deleted in the plugin should also be deleted in the project.
 * Files that have been deleted in the project should be replaced with files in the plugin.
 * Copying should be triggered when Rails starts or the tests are run.
+* Should be able to run asset_copier_generator from outside a Rails project.
