@@ -1,5 +1,4 @@
 * Copying should be triggered when Rails starts or the tests are run.
 ** Hook install.rb to prompt if someone is installing the plugin and a file already exists.
-** Hook init.rb to overwrite files in dev mode, but warn in prod mode that files have changed.
 ** Line in init.rb can be commented out to force an install every single time.
 * Should be able to run asset_copier_generator from outside a Rails project.

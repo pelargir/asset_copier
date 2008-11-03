@@ -3,5 +3,5 @@ require 'asset_copier'
 if RAILS_ENV == "development"
   AssetCopier.copy "<%= file_name %>"
 else
-  # don't actually copy, just warn
+  AssetCopier.warn "<%= file_name %>"
 end
