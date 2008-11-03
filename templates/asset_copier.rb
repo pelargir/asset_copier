@@ -8,40 +8,38 @@ class AssetCopier
   @destination = RAILS_ROOT
   @deleted_files = File.expand_path(File.join(File.dirname(__FILE__), '..', 'deleted_files'))
   class << self
-    attr_accessor :source, :destination, :deleted_files
+    attr_accessor :source, :destination, :deleted_files, :plugin_name
   end
   
-  def self.copy
-    paths.each do |path| 
-      dest_path = path.gsub(source, destination)
-      if File.directory?(path)
-        unless File.exists?(dest_path)
-          FileUtils.mkdir_p(dest_path)
-          puts "Creating directory #{dest_path}"
+  def self.copy(plugin_name)
+    self.plugin_name = plugin_name
+    begin
+      paths.each do |path| 
+        dest_path = path.gsub(source, destination)
+        if File.directory?(path)
+          unless File.exists?(dest_path)
+            FileUtils.mkdir_p(dest_path)
+            puts "Creating directory #{dest_path}"
+          end
+        else
+          FileUtils.cp(path, dest_path)
+          puts "Copying #{dest_path}"
         end
-      else
-        FileUtils.cp(path, dest_path)
-        puts "Copying #{dest_path}"
       end
+    rescue Exception => e
+      puts "Error trying to copy files: #{e.inspect}"
+      raise e
     end
-  rescue Exception => e
-    puts "Error trying to copy files: #{e.inspect}"
-    raise e
+    print_deletion_warnings
   end
   
-  def self.delete
+  def self.print_deletion_warnings
     File.open(deleted_files, "r") do |f|
       f.readlines.reject { |l| l =~ /^#/ || l.strip.blank? }.each do |l|
-        path = File.expand_path(l.strip)
-        if File.exists?(path)
-          File.delete(path)
-          puts "Deleting #{path}"
-        end
+        puts "WARNING: #{l} is no longer required by the #{plugin_name} plugin " <<
+          "and can can be safely removed" if File.exists?(l)
       end
     end
-  rescue Exception => e
-    puts "Error trying to delete files: #{e.inspect}"
-    raise e
   end
   
   def self.paths

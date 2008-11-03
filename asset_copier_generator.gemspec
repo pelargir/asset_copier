@@ -15,6 +15,7 @@ Gem::Specification.new do |s|
     "Rakefile",
     "README",
     "templates/asset_copier.erb",
+    "templates/init.erb",
     "templates/install.erb",
     "templates/asset_copier.rb",
     "templates/deleted_files",
