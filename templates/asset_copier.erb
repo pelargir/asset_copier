@@ -7,5 +7,6 @@ namespace :<%= file_name %> do
   desc "Install files required by <%= file_name %>"
   task :install do  
     AssetCopier.copy
+    AssetCopier.delete
   end
 end

@@ -17,6 +17,7 @@ Gem::Specification.new do |s|
     "templates/asset_copier.erb",
     "templates/install.erb",
     "templates/asset_copier.rb",
+    "templates/deleted_files",
     "TODO",
     "USAGE",
 		"asset_copier_generator.gemspec"

@@ -6,21 +6,41 @@ require 'find'
 class AssetCopier
   @source = File.expand_path(File.join(File.dirname(__FILE__), '..', 'files'))
   @destination = RAILS_ROOT
+  @deleted_files = File.expand_path(File.join(File.dirname(__FILE__), '..', 'deleted_files'))
   class << self
-    attr_accessor :source, :destination
+    attr_accessor :source, :destination, :deleted_files
   end
   
   def self.copy
     paths.each do |path| 
       dest_path = path.gsub(source, destination)
       if File.directory?(path)
-        FileUtils.mkdir_p(dest_path) unless File.exists?(dest_path)
+        unless File.exists?(dest_path)
+          FileUtils.mkdir_p(dest_path)
+          puts "Creating directory #{dest_path}"
+        end
       else
         FileUtils.cp(path, dest_path)
+        puts "Copying #{dest_path}"
       end
     end
   rescue Exception => e
     puts "Error trying to copy files: #{e.inspect}"
+    raise e
+  end
+  
+  def self.delete
+    File.open(deleted_files, "r") do |f|
+      f.readlines.reject { |l| l =~ /^#/ || l.strip.blank? }.each do |l|
+        path = File.expand_path(l.strip)
+        if File.exists?(path)
+          File.delete(path)
+          puts "Deleting #{path}"
+        end
+      end
+    end
+  rescue Exception => e
+    puts "Error trying to delete files: #{e.inspect}"
     raise e
   end
   
