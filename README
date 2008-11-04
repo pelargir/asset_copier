@@ -15,7 +15,7 @@ Or clone the project, build the gem, and install:
   gem build asset_copier_generator.gemspec
   sudo gem install asset_copier_generator
 
-== Usage
+== Apply to Target Plugin
 
 asset_copier_generator will copy the necessary files into a target plugin
 to enable intelligent asset management. You should then check these files in
@@ -34,6 +34,22 @@ from your plugin into your Rails app, run:
 
 Your users can run this same Rake task any time they want to update files
 in their Rails app to reflect the assets needed by your plugin.
+
+== Usage
+
+Once applied to a target plugin, files within the /files directory of that
+plugin will be copied into RAILS_ROOT whenever the installation task is run.
+
+Files will also be copied every time the Rails server is started if the project
+is running in development mode. (Projects running in production mode will instead
+receive a warning in the log that one or more files are missing. No files
+will automatically be copied.)
+
+What if you remove a file from your plugin at some future point? Simply add
+the file path to deleted_files. The next time the Rails server is started
+or the install task is run, a warning will print in the log informing the
+user that the file has been removed from the plugin and can also safely
+be removed from their Rails project.
 
 == Resources
 
