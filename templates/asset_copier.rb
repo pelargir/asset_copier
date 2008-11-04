@@ -15,17 +15,15 @@ class AssetCopier
   def self.copy(plugin_name)
     self.plugin_name = plugin_name
     begin
-      paths.each do |path| 
-        dest_path = path.gsub(source, destination)
-        clean_path = dest_path.gsub("#{RAILS_ROOT}/", "")
+      each_path do |path, dest_path, short_path| 
         if File.directory?(path)
           unless File.exists?(dest_path)
             FileUtils.mkdir_p(dest_path)
-            puts "Creating directory #{clean_path} for #{plugin_name}"
+            puts "Creating directory #{short_path} for #{plugin_name}"
           end
         else
           FileUtils.cp(path, dest_path)
-          puts "Copying #{clean_path} from #{plugin_name}"
+          puts "Copying #{short_path} from #{plugin_name}"
         end
       end
     rescue Exception => e
@@ -37,19 +35,17 @@ class AssetCopier
   
   def self.warn(plugin_name)
     self.plugin_name = plugin_name
-    paths.each do |path| 
+    each_path do |path, dest_path, short_path|
       next if File.directory?(path)
-      dest_path = path.gsub(source, destination)
-      clean_path = dest_path.gsub("#{RAILS_ROOT}/", "")
       reinstall = false
       if File.exists?(dest_path)
         unless compare(path, dest_path)
-          puts "WARNING: #{clean_path} is out of date and needs to be reinstalled"
+          puts "WARNING: #{short_path} is out of date and needs to be reinstalled"
           reinstall = true
         end
       else
         reinstall = true
-        puts "WARNING: #{clean_path} is missing and needs to be installed"
+        puts "WARNING: #{short_path} is missing and needs to be installed"
       end
       puts "WARNING: Please run rake #{plugin_name}:install" if reinstall
     end
@@ -70,12 +66,21 @@ class AssetCopier
   end
   
   def self.paths
-    paths = []
-    Find.find(source) do |path|
-      Find.prune if path =~ /\/\..+/
-      Find.prune if path =~ /(CVS|.svn|.git)/
-      paths << path
+    returning [] do |paths|
+      Find.find(source) do |path|
+        Find.prune if path =~ /\/\..+/
+        Find.prune if path =~ /(CVS|.svn|.git)/
+        paths << path
+      end
     end
-    paths
   end
+  
+  def self.each_path
+    paths.each do |path|
+      dest_path = path.gsub(source, destination)
+      short_path = dest_path.gsub("#{RAILS_ROOT}/", "")
+      yield path, dest_path, short_path
+    end
+  end
+    
 end
