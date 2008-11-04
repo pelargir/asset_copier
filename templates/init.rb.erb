@@ -1,0 +1,7 @@
+require '<%= file_name %>/asset_copier'
+
+if RAILS_ENV == "development"
+  <%= class_name %>::AssetCopier.copy "<%= file_name %>"
+else
+  <%= class_name %>::AssetCopier.warn "<%= file_name %>"
+end
