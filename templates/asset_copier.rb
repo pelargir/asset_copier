@@ -5,15 +5,15 @@ require 'find'
 require 'digest/md5'
 
 class AssetCopier
-  @source = File.expand_path(File.join(File.dirname(__FILE__), '..', 'files'))
-  @destination = RAILS_ROOT
-  @deleted_files = File.expand_path(File.join(File.dirname(__FILE__), '..', 'deleted_files'))
-  class << self
-    attr_accessor :source, :destination, :deleted_files, :plugin_name
+  def self.source
+    File.expand_path(File.join(File.dirname(__FILE__), '..', 'files'))
+  end
+  
+  def self.deleted_files
+    File.expand_path(File.join(File.dirname(__FILE__), '..', 'deleted_files'))
   end
   
   def self.copy(plugin_name)
-    self.plugin_name = plugin_name
     begin
       each_path do |path, dest_path, short_path| 
         if File.directory?(path)
@@ -30,11 +30,10 @@ class AssetCopier
       puts "Error trying to copy files: #{e.inspect}"
       raise e
     end
-    print_deletion_warnings
+    print_deletion_warnings(plugin_name)
   end
   
   def self.warn(plugin_name)
-    self.plugin_name = plugin_name
     each_path do |path, dest_path, short_path|
       next if File.directory?(path)
       reinstall = false
@@ -49,14 +48,14 @@ class AssetCopier
       end
       puts "WARNING: Please run rake #{plugin_name}:install" if reinstall
     end
-    print_deletion_warnings
+    print_deletion_warnings(plugin_name)
   end
   
   def self.compare(file1, file2)
     Digest::MD5.hexdigest(File.read(file1)) == Digest::MD5.hexdigest(File.read(file2))
   end
   
-  def self.print_deletion_warnings
+  def self.print_deletion_warnings(plugin_name)
     File.open(deleted_files, "r") do |f|
       f.readlines.reject { |l| l =~ /^#/ || l.strip.blank? }.each do |l|
         puts "WARNING: #{l} is no longer required by the #{plugin_name} plugin " <<
@@ -77,10 +76,9 @@ class AssetCopier
   
   def self.each_path
     paths.each do |path|
-      dest_path = path.gsub(source, destination)
+      dest_path = path.gsub(source, RAILS_ROOT)
       short_path = dest_path.gsub("#{RAILS_ROOT}/", "")
       yield path, dest_path, short_path
     end
   end
-    
 end
