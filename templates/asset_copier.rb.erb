@@ -21,7 +21,7 @@ module <%= class_name %>
               FileUtils.mkdir_p(dest_path)
               log "Creating directory #{short_path} for #{plugin_name}"
             end
-          elsif compare(path, dest_path)
+          elsif !compare(path, dest_path)
             FileUtils.cp(path, dest_path)
             log "Copying #{short_path} from #{plugin_name}"
           end
