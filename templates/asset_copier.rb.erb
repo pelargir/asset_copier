@@ -69,7 +69,7 @@ module <%= class_name %>
       returning [] do |paths|
         Find.find(source) do |path|
           Find.prune if path =~ /\/\..+/
-          Find.prune if path =~ /(CVS|.svn|.git)/
+          Find.prune if path =~ /(CVS|\.svn|\.git)/
           paths << path
         end
       end
